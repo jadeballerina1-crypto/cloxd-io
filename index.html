@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101114">
+  <meta name="description" content="CloxD.io is an original browser voxel sandbox game prototype.">
+  <title>CloxD.io — Build your world</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="importmap">
+    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+  </script>
+  <script type="module" src="./src/main.js"></script>
+</head>
+<body>
+  <div id="gameCanvas" aria-label="Voxel game world"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="CloxD.io home"><span class="brand-mark">C</span><span>CLOXD<span class="brand-dot">.IO</span></span></a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <button class="nav-link active" data-page="play">Play</button>
+      <button class="nav-link" data-page="discover">Discover</button>
+      <button class="nav-link" data-page="shop">Cosmetics</button>
+    </nav>
+    <div class="top-actions">
+      <button class="coin-display" id="coinDisplay" title="Demo coins"><span class="coin-icon">C</span><span id="coinCount">250</span></button>
+      <button class="avatar-button" id="profileButton" aria-label="Open profile"><span id="avatarInitial">P</span></button>
+    </div>
+  </header>
+
+  <main class="home-view" id="homeView">
+    <section class="hero page-panel" id="page-play">
+      <div class="hero-copy">
+        <span class="eyebrow"><i></i> OPEN BUILD · ORIGINAL VOXEL SANDBOX</span>
+        <h1>Your world.<br><span>Your rules.</span></h1>
+        <p>Explore a block-built sandbox, create something strange, and invite your friends to imagine what comes next.</p>
+        <div class="hero-buttons">
+          <button class="button primary large" id="playButton">Play now <span aria-hidden="true">↗</span></button>
+          <button class="button ghost large" id="worldsButton">Browse worlds</button>
+        </div>
+        <div class="hero-meta"><span class="live-dot"></span><span>CREATIVE MODE</span><span class="meta-separator"></span><span>BUILD · EXPLORE · REPEAT</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        <div class="floating-block block-back"></div><div class="floating-block block-mid"></div><div class="floating-block block-front"></div>
+        <div class="art-caption"><span>WORLD 001</span><strong>THE QUIET FRONTIER</strong></div>
+      </div>
+    </section>
+
+    <section class="section-block page-panel" id="worldSection">
+      <div class="section-heading"><div><span class="eyebrow">PICK A PLACE</span><h2>Featured worlds</h2></div><button class="text-button" id="allWorldsButton">View all <span>→</span></button></div>
+      <div class="world-grid" id="worldGrid"></div>
+    </section>
+
+    <section class="section-block page-panel" id="discoverSection">
+      <div class="section-heading"><div><span class="eyebrow">WHAT'S HAPPENING</span><h2>Explore the modes</h2></div></div>
+      <div class="mode-grid">
+        <button class="mode-card mode-build" data-mode="Creative"><span class="mode-number">01 / CREATE</span><strong>Creative</strong><span>Build without limits</span><b>↗</b></button>
+        <button class="mode-card mode-survive" data-mode="Survival"><span class="mode-number">02 / SURVIVE</span><strong>Survival</strong><span>Gather, craft, endure</span><b>↗</b></button>
+        <button class="mode-card mode-parkour" data-mode="Parkour"><span class="mode-number">03 / MOVE</span><strong>Parkour</strong><span>Find your next route</span><b>↗</b></button>
+      </div>
+    </section>
+
+    <section class="section-block community-strip">
+      <div><span class="eyebrow">YOUR NEXT PROJECT STARTS HERE</span><h2>Make something that feels like yours.</h2></div>
+      <button class="button primary" id="communityPlay">Enter the sandbox <span>↗</span></button>
+    </section>
+  </main>
+
+  <main class="subpage hidden" id="shopView">
+    <div class="subpage-heading"><span class="eyebrow">LOOK YOUR WAY</span><h1>Cosmetics</h1><p>Choose an avatar color or pick up a demo cosmetic with your local coins.</p></div>
+    <div class="shop-layout"><div class="shop-preview panel-card"><div class="avatar-preview" id="avatarPreview"><div class="avatar-head"></div><div class="avatar-body"></div></div><span class="eyebrow">YOUR AVATAR</span><h2 id="shopPlayerName">Player</h2><div class="swatches" id="avatarSwatches"></div></div><div class="cosmetic-grid" id="cosmeticGrid"></div></div>
+  </main>
+
+  <main class="subpage hidden" id="discoverView">
+    <div class="subpage-heading"><span class="eyebrow">COMMUNITY WORLDS</span><h1>Discover</h1><p>Choose a sample destination. Multiplayer and public world listings need a game server; these worlds run locally in this prototype.</p></div>
+    <div class="discover-grid" id="discoverGrid"></div>
+  </main>
+
+  <section class="game-overlay hidden" id="gameHud" aria-label="Game interface">
+    <div class="hud-top"><button class="hud-brand" id="backHome"><span class="brand-mark small-mark">C</span> CLOXD.IO</button><div class="hud-world"><span class="live-dot"></span><span id="hudWorldName">The Quiet Frontier</span><span class="hud-mode" id="hudMode">CREATIVE</span></div><div class="hud-actions"><button class="icon-button" id="settingsButton" aria-label="Settings">⚙</button><button class="icon-button" id="chatToggle" aria-label="Chat">CHAT</button><button class="icon-button" id="exitButton" aria-label="Exit world">EXIT</button></div></div>
+    <div class="crosshair"><i></i><b></b></div>
+    <div class="toast hidden" id="toast"></div>
+    <div class="chat-panel hidden" id="chatPanel"><div class="chat-head"><strong>World chat</strong><span>LOCAL PREVIEW</span><button class="icon-button" id="closeChat" aria-label="Close chat">×</button></div><div class="chat-messages" id="chatMessages"><div class="chat-line system"><b>WORLD</b><span>Welcome to the sandbox. Chat is local in this preview.</span></div></div><form id="chatForm" class="chat-form"><input id="chatInput" maxlength="180" autocomplete="off" placeholder="Say something..." aria-label="Chat message"><button class="button primary" type="submit">Send</button></form></div>
+    <div class="hotbar" id="hotbar"></div>
+    <div class="controls-hint"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> MOVE <span></span><kbd>SPACE</kbd> JUMP <span></span><kbd>CLICK</kbd> BUILD <span></span><kbd>ESC</kbd> MENU</div>
+    <div class="game-menu hidden" id="gameMenu"><div class="menu-card"><span class="eyebrow">PAUSED</span><h2>Take a breather.</h2><button class="button primary full" id="resumeButton">Resume game</button><button class="button ghost full" id="menuSettingsButton">Settings</button><button class="button ghost full" id="leaveWorldButton">Leave world</button></div></div>
+  </section>
+
+  <dialog id="settingsDialog" class="modal"><form method="dialog" class="modal-card"><div class="modal-heading"><div><span class="eyebrow">PERSONALIZE</span><h2>Settings</h2></div><button class="close-button" aria-label="Close">×</button></div><label class="setting-row"><span><strong>Mouse sensitivity</strong><small>Adjust how quickly the camera turns.</small></span><input id="sensitivity" type="range" min="0.3" max="2" step="0.1" value="1"></label><label class="setting-row"><span><strong>Field of view</strong><small>Wider view shows more of the world.</small></span><input id="fov" type="range" min="60" max="100" step="1" value="75"></label><label class="setting-row"><span><strong>Invert vertical look</strong><small>Reverse vertical mouse movement.</small></span><input id="invertLook" type="checkbox"></label><button class="button primary full" id="saveSettings" value="save">Done</button></form></dialog>
+
+  <dialog id="profileDialog" class="modal"><form method="dialog" class="modal-card"><div class="modal-heading"><div><span class="eyebrow">PLAYER CARD</span><h2>Your profile</h2></div><button class="close-button" aria-label="Close">×</button></div><div class="profile-card"><div class="profile-avatar" id="profileAvatar">P</div><div><strong id="profileName">Player</strong><span id="profileRank">New Builder</span></div><span class="rank-badge" id="rankBadge">BUILDER</span></div><div class="profile-stats"><div><strong id="profileXP">0</strong><span>BUILD XP</span></div><div><strong id="profileCoins">250</strong><span>COINS</span></div><div><strong id="profileBlocks">0</strong><span>BLOCKS PLACED</span></div></div><label class="field-label" for="nameInput">DISPLAY NAME</label><input id="nameInput" maxlength="18" placeholder="Player"><button class="button primary full" id="saveProfile" value="save">Save profile</button><p class="fine-print">Ranks and progress are local demo data. Creator / YouTuber verification requires a trusted server and moderator workflow.</p></form></dialog>
+
+  <div class="welcome-toast" id="welcomeToast" role="status">Welcome to CloxD.io</div>
+  <footer class="site-footer"><span>© 2026 CLOXD.IO · ORIGINAL VOXEL SANDBOX PROTOTYPE</span><span>Single-player preview · No account or payment data collected</span></footer>
+</body>
+</html>
